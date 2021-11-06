@@ -16,6 +16,7 @@ except ImportError:
     print("Login info is kept in secrets.py, please add them there!")
     print("secrets = {")
     print("   'email' : '<sending email>',")
+    print("   'email_login' : '<sending email user login>',")
     print("   'email_rcvr' : '<receiving email>',")
     print("   'email_password' : '<sending email password>',")
     print("   'leaderboard_url' : '<unique id>.json', #not the full url, just the last piece")
@@ -57,6 +58,10 @@ class Coder:
 
 r = requests.get(LdrBrd_url,cookies=session)
 data = r.json()
+jsonOutputFile='{}_jsonData.json'.format(year)
+with open(jsonOutputFile,"w+") as fp:
+    print(json.dumps(data),file=fp)
+    fp.close()
 
 members = data['members']
 coders = []
@@ -96,7 +101,7 @@ with open(resultsFile,"w+") as fp:
         try:
             server=smtplib.SMTP(secrets['smtp_server'])
             server.starttls()
-            server.login(secrets['email'],secrets['email_password'])
+            server.login(secrets['email_login'],secrets['email_password'])
             server.send_message(msg)
             server.quit()
         except Exception as e:

@@ -9,8 +9,6 @@ import pypandoc
 import os
 
 #Assuming this is run from repo root
-SESSION_KEY=open('./Tools/session_key.txt').read()
-
 DESCR_URL = 'http://adventofcode.com/{}/day/{}'
 DESCR = 'Day{:02}.md'
 
@@ -19,7 +17,13 @@ INPUT = 'Day{:02}.txt'
 
 SRC_DIR = 'Day{:02}/'
 
-session = dict(session=SESSION_KEY)
+# Get session cookie details from a secrets.py file
+try:
+    from secrets import secrets
+except ImportError:
+    print("Login info is kept in secrets.py, please add them there!")
+    raise
+session = dict(session=secrets['session_token'])
 
 def downloadDesc(day,year):
   print('Downloading description for Day {:02}...'.format(day)),
