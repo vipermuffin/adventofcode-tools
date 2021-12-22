@@ -4,6 +4,8 @@ then
   echo "Usage: ./GenerateDay.sh <day> <year>"
 else
   inputDay="$(printf "Day%02d" $1)"
+  addSubTxt="$(printf "add_subdirectory(\"\${PROJECT_SOURCE_DIR}/Day%02d/\")" $1)"
+  echo $addSubTxt >> CMakeLists.txt
   python ./Tools/DownloadDay.py $1 $2
   open -a "Markdown Pro" $inputDay/$inputDay.md
   cp ./Templates/BootstrapCMakeLists.txt.in "./$inputDay/CMakeLists.txt"
